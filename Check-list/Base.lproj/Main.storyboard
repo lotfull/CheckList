@@ -19,27 +19,44 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="checkmark" indentationWidth="10" reuseIdentifier="ChecklistCell" id="wvD-NG-tcc">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="detailDisclosureButton" indentationWidth="10" reuseIdentifier="ChecklistCell" id="wvD-NG-tcc">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wvD-NG-tcc" id="O76-2S-PYG">
-                                    <rect key="frame" x="0.0" y="0.0" width="336" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="308" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" tag="1000" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PyH-tF-vdb">
-                                            <rect key="frame" x="18" y="8" width="300" height="27.5"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
+                                        <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="R9z-dd-50P" userLabel="Cell stack">
+                                            <rect key="frame" x="16" y="8" width="276" height="27.5"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="1001" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="☑️" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u1J-gN-yWs">
+                                                    <rect key="frame" x="0.0" y="0.5" width="26" height="26.5"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="26" id="WbK-f3-3Hw"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="1000" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PyH-tF-vdb" userLabel="text">
+                                                    <rect key="frame" x="30" y="3.5" width="246" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </stackView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="bottomMargin" secondItem="PyH-tF-vdb" secondAttribute="bottom" id="Bl3-K9-o2R"/>
-                                        <constraint firstItem="PyH-tF-vdb" firstAttribute="top" secondItem="O76-2S-PYG" secondAttribute="topMargin" id="EBR-Kj-pcX"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="PyH-tF-vdb" secondAttribute="trailing" constant="10" id="Hek-im-fNc"/>
-                                        <constraint firstItem="PyH-tF-vdb" firstAttribute="leading" secondItem="O76-2S-PYG" secondAttribute="leadingMargin" constant="10" id="fe6-mv-fHb"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="R9z-dd-50P" secondAttribute="trailing" constant="8" id="HgU-Dj-2G0"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="R9z-dd-50P" secondAttribute="bottom" id="Mbv-Rg-qWz"/>
+                                        <constraint firstItem="R9z-dd-50P" firstAttribute="leading" secondItem="O76-2S-PYG" secondAttribute="leadingMargin" constant="8" id="Ns4-tm-eIF"/>
+                                        <constraint firstItem="R9z-dd-50P" firstAttribute="top" secondItem="O76-2S-PYG" secondAttribute="topMargin" id="gOc-uA-JJP"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="s94-jg-erL" kind="presentation" identifier="EditItem" trigger="accessoryAction" id="deh-XG-GVJ"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -50,7 +67,7 @@
                     <navigationItem key="navigationItem" title="Checklist" id="A4f-3c-h6V">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="HT5-Pz-WTJ">
                             <connections>
-                                <segue destination="s94-jg-erL" kind="presentation" identifier="Additem" modalTransitionStyle="crossDissolve" id="WO7-IQ-i7M"/>
+                                <segue destination="s94-jg-erL" kind="presentation" identifier="AddItem" modalTransitionStyle="crossDissolve" id="WO7-IQ-i7M"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -162,4 +179,7 @@
             <point key="canvasLocation" x="1684" y="34"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="WO7-IQ-i7M"/>
+    </inferredMetricsTieBreakers>
 </document>

@@ -21,6 +21,12 @@ class ChecklistVC: UITableViewController, /* step 4 */ AddItemVCDelegate {
         dismiss(animated: true, completion: nil)
     }
     
+    func addItemVCDone(_ controller: AddItemVC, didFinishEditing item: ChecklistItem, with indexPath: IndexPath) {
+        items[indexPath.row] = item
+        tableView.reloadData()
+        dismiss(animated: true, completion: nil)
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         itemsNumber = texts.count
         rowIsChecked = [Bool](repeating: false, count: itemsNumber)
@@ -53,15 +59,16 @@ class ChecklistVC: UITableViewController, /* step 4 */ AddItemVCDelegate {
         return items.count
     }
     
-    func configureCheckmarks(for cell: UITableViewCell, at indexPath: IndexPath) {
-        cell.accessoryType = items[indexPath.row].checked ? .checkmark : .none
+    func configureCheckmarks(for cell: UITableViewCell, with item: ChecklistItem) {
+        let checkLabel = cell.viewWithTag(1001) as! UILabel
+        checkLabel.text =  item.checked ? "✅" : "☑️"
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let cell = tableView.cellForRow(at: indexPath) {
             let item = items[indexPath.row]
             item.checked = !item.checked
-            configureCheckmarks(for: cell, at: indexPath)
+            configureCheckmarks(for: cell, with: item)
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -72,7 +79,7 @@ class ChecklistVC: UITableViewController, /* step 4 */ AddItemVCDelegate {
         let label = cell.viewWithTag(1000) as! UILabel
         let item = items[indexPath.row]
         label.text = item.text
-        configureCheckmarks(for: cell, at: indexPath)
+        configureCheckmarks(for: cell, with: item)
         return cell
     }
     
@@ -85,10 +92,20 @@ class ChecklistVC: UITableViewController, /* step 4 */ AddItemVCDelegate {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "Additem",
+        if (segue.identifier == "AddItem" || segue.identifier == "EditItem"),
         let navigationController = segue.destination as? UINavigationController,
         let controller = navigationController.topViewController as? AddItemVC {
             controller.delegate = self
+            
+            if segue.identifier == "EditItem",
+            let indexPath = tableView.indexPath(for: sender as! UITableViewCell) {
+                controller.itemToEdit = items[indexPath.row]
+                controller.itemToEditIndexPath = indexPath
+            } else {
+                print("Error while segue.identifier == EditItem and unwraping indexPath?")
+            }
+        } else {
+            print("Error while segue.identifier == AddIten || EditItem and typecasting seque.identifier through navCon and AddItemVC")
         }
     }
 }

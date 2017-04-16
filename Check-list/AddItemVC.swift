@@ -11,23 +11,32 @@ import UIKit
 protocol AddItemVCDelegate: class {
     func addItemVCDidCancel(_ controller: AddItemVC)
     func addItemVCDone(_ controller: AddItemVC, didFinishAdding item: ChecklistItem)
+    func addItemVCDone(_ controller: AddItemVC, didFinishEditing item: ChecklistItem, with indexPath: IndexPath)
 }
 
 class AddItemVC: UITableViewController, UITextViewDelegate {
     // step 2
     weak var delegate: AddItemVCDelegate?
     
+    var itemToEdit: ChecklistItem?
+    var itemToEditIndexPath: IndexPath?
+    
     @IBOutlet weak var doneButton: UIBarButtonItem!
     // step 3
     @IBAction func cancel(_ sender: Any) { // when the user taps the Cancel button - i send the addItemVCDidCancel() message back to the delegate
         delegate?.addItemVCDidCancel(self)
     }
-    // step 3
+    // step 3 ✅☑️
     @IBAction func done(_ sender: Any) {
-        let item = ChecklistItem()
-        item.text = textField.text!
-        item.checked = false
-        delegate?.addItemVCDone(self, didFinishAdding: item)
+        if let item = itemToEdit {
+            item.text = textField.text!
+            delegate?.addItemVCDone(self, didFinishEditing: item, with: itemToEditIndexPath!)
+        } else {
+            let item = ChecklistItem()
+            item.text = textField.text!
+            item.checked = false
+            delegate?.addItemVCDone(self, didFinishAdding: item)
+        }
     }
     
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
@@ -47,6 +56,16 @@ class AddItemVC: UITableViewController, UITextViewDelegate {
         let newText = oldText.replacingCharacters(in: range, with: string) as NSString
         doneButton.isEnabled = (newText.length > 0)
         return true
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        if let item = itemToEdit {
+            title = "Edit Item"
+            textField.text = item.text
+            doneButton.isEnabled = true
+        }
     }
     
     
