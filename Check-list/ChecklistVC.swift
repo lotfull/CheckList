@@ -20,10 +20,14 @@ class ChecklistVC: UITableViewController, /* step 4 */ AddItemVCDelegate {
         tableView.insertRows(at: [indexPath], with: .automatic)
         dismiss(animated: true, completion: nil)
     }
-    
-    func addItemVCDone(_ controller: AddItemVC, didFinishEditing item: ChecklistItem, with indexPath: IndexPath) {
-        items[indexPath.row] = item
-        tableView.reloadData()
+    func addItemVCDone(_ controller: AddItemVC,
+                       didFinishEditing item: ChecklistItem) {
+        if let index = items.index(of: item) {
+            let indexPath = IndexPath(row: index, section: 0)
+            if let cell = tableView.cellForRow(at: indexPath) {
+                configureText(for: cell, with: item)
+            }
+        }
         dismiss(animated: true, completion: nil)
     }
     
@@ -64,6 +68,11 @@ class ChecklistVC: UITableViewController, /* step 4 */ AddItemVCDelegate {
         checkLabel.text =  item.checked ? "✅" : "☑️"
     }
     
+    func configureText(for cell: UITableViewCell, with item: ChecklistItem) {
+        let label = cell.viewWithTag(1000) as! UILabel
+        label.text = item.text
+    }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let cell = tableView.cellForRow(at: indexPath) {
             let item = items[indexPath.row]
@@ -100,7 +109,6 @@ class ChecklistVC: UITableViewController, /* step 4 */ AddItemVCDelegate {
             if segue.identifier == "EditItem",
             let indexPath = tableView.indexPath(for: sender as! UITableViewCell) {
                 controller.itemToEdit = items[indexPath.row]
-                controller.itemToEditIndexPath = indexPath
             } else {
                 print("Error while segue.identifier == EditItem and unwraping indexPath?")
             }

@@ -11,7 +11,7 @@ import UIKit
 protocol AddItemVCDelegate: class {
     func addItemVCDidCancel(_ controller: AddItemVC)
     func addItemVCDone(_ controller: AddItemVC, didFinishAdding item: ChecklistItem)
-    func addItemVCDone(_ controller: AddItemVC, didFinishEditing item: ChecklistItem, with indexPath: IndexPath)
+    func addItemVCDone(_ controller: AddItemVC, didFinishEditing item: ChecklistItem)
 }
 
 class AddItemVC: UITableViewController, UITextViewDelegate {
@@ -19,7 +19,6 @@ class AddItemVC: UITableViewController, UITextViewDelegate {
     weak var delegate: AddItemVCDelegate?
     
     var itemToEdit: ChecklistItem?
-    var itemToEditIndexPath: IndexPath?
     
     @IBOutlet weak var doneButton: UIBarButtonItem!
     // step 3
@@ -30,7 +29,7 @@ class AddItemVC: UITableViewController, UITextViewDelegate {
     @IBAction func done(_ sender: Any) {
         if let item = itemToEdit {
             item.text = textField.text!
-            delegate?.addItemVCDone(self, didFinishEditing: item, with: itemToEditIndexPath!)
+            delegate?.addItemVCDone(self, didFinishEditing: item)
         } else {
             let item = ChecklistItem()
             item.text = textField.text!
