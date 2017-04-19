@@ -1,5 +1,5 @@
 //
-//  AddItemVC.swift
+//  ItemDetailVC.swift
 //  Check-list
 //
 //  Created by Kam Lotfull on 16.04.17.
@@ -8,33 +8,33 @@
 
 import UIKit
 // step 1
-protocol AddItemVCDelegate: class {
-    func addItemVCDidCancel(_ controller: AddItemVC)
-    func addItemVCDone(_ controller: AddItemVC, didFinishAdding item: ChecklistItem)
-    func addItemVCDone(_ controller: AddItemVC, didFinishEditing item: ChecklistItem)
+protocol ItemDetailVCDelegate: class {
+    func itemDetailVCDidCancel(_ controller: ItemDetailVC)
+    func itemDetailVCDone(_ controller: ItemDetailVC, didFinishAdding item: ChecklistItem)
+    func itemDetailVCDone(_ controller: ItemDetailVC, didFinishEditing item: ChecklistItem)
 }
 
-class AddItemVC: UITableViewController, UITextViewDelegate {
+class ItemDetailVC: UITableViewController, UITextViewDelegate {
     // step 2
-    weak var delegate: AddItemVCDelegate?
+    weak var delegate: ItemDetailVCDelegate?
     
     var itemToEdit: ChecklistItem?
     
     @IBOutlet weak var doneButton: UIBarButtonItem!
     // step 3
-    @IBAction func cancel(_ sender: Any) { // when the user taps the Cancel button - i send the addItemVCDidCancel() message back to the delegate
-        delegate?.addItemVCDidCancel(self)
+    @IBAction func cancel(_ sender: Any) { // when the user taps the Cancel button - i send the itemDetailVCDidCancel() message back to the delegate
+        delegate?.itemDetailVCDidCancel(self)
     }
     // step 3 ✅☑️
     @IBAction func done(_ sender: Any) {
         if let item = itemToEdit {
             item.text = textField.text!
-            delegate?.addItemVCDone(self, didFinishEditing: item)
+            delegate?.itemDetailVCDone(self, didFinishEditing: item)
         } else {
             let item = ChecklistItem()
             item.text = textField.text!
             item.checked = false
-            delegate?.addItemVCDone(self, didFinishAdding: item)
+            delegate?.itemDetailVCDone(self, didFinishAdding: item)
         }
     }
     
