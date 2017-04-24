@@ -15,17 +15,28 @@ protocol ItemDetailVCDelegate: class {
 }
 
 class ItemDetailVC: UITableViewController, UITextViewDelegate {
-    // step 2
-    weak var delegate: ItemDetailVCDelegate?
     
+    @IBOutlet weak var textField: UITextField!
+    @IBOutlet weak var doneButton: UIBarButtonItem!
+
+    weak var delegate: ItemDetailVCDelegate?
+
     var itemToEdit: ChecklistItem?
     
-    @IBOutlet weak var doneButton: UIBarButtonItem!
-    // step 3
-    @IBAction func cancel(_ sender: Any) { // when the user taps the Cancel button - i send the itemDetailVCDidCancel() message back to the delegate
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        if let item = itemToEdit {
+            title = "Edit Item"
+            textField.text = item.text
+            doneButton.isEnabled = true
+        }
+    }
+    
+    @IBAction func cancel(_ sender: Any) {
         delegate?.itemDetailVCDidCancel(self)
     }
-    // step 3 ✅☑️
+
     @IBAction func done(_ sender: Any) {
         if let item = itemToEdit {
             item.text = textField.text!
@@ -42,7 +53,6 @@ class ItemDetailVC: UITableViewController, UITextViewDelegate {
         return nil
     }
     
-    @IBOutlet weak var textField: UITextField!
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -57,15 +67,7 @@ class ItemDetailVC: UITableViewController, UITextViewDelegate {
         return true
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        if let item = itemToEdit {
-            title = "Edit Item"
-            textField.text = item.text
-            doneButton.isEnabled = true
-        }
-    }
+
     
     
     

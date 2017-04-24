@@ -12,6 +12,7 @@ class ChecklistVC: UITableViewController, /* step 4 */ ItemDetailVCDelegate {
    
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = checklist.name
     }
     required init?(coder aDecoder: NSCoder) {
         /*itemsNumber = texts.count
@@ -145,5 +146,6 @@ class ChecklistVC: UITableViewController, /* step 4 */ ItemDetailVCDelegate {
         "Make push-ups and chin-ups"
     ]
     let ItemsKeyName = "ChecklistItems"
+    var checklist: Checklist!
 }
 
