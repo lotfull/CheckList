@@ -16,14 +16,15 @@ class AllListsVC: UITableViewController, ListDetailVCDelegate {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        lists = [Checklist]()
-        
         super.init(coder: aDecoder)
-        
-        for name in listNames {
-            lists.append(Checklist(name: name))
-        }
-        
+        /*
+        var list = Checklist(name: "Bitch")
+        var item = ChecklistItem()
+        item.text = "Fuck"
+        list.items.append(item)
+        lists.append(list)
+        saveChecklists()*/
+        loadCheckLists()
     }
 
     // MARK: - Table view data source
@@ -113,5 +114,32 @@ class AllListsVC: UITableViewController, ListDetailVCDelegate {
             present(navigationController, animated: true, completion: nil)
         } else { print("Some error with tableView(accessoryButtonTappedForRowWith)") }
     }
+    
+    // MARK: - Saving Data
+
+    func documentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return paths[0]
+    }
+    func dataFilePath() -> URL {
+        return documentsDirectory().appendingPathComponent("Checklists.plist")
+    }
+    func saveChecklists() {
+        let data = NSMutableData()
+        let archiver = NSKeyedArchiver(forWritingWith: data)
+        archiver.encode(lists, forKey: ChecklistsKey)
+        archiver.finishEncoding()
+        data.write(to: dataFilePath(), atomically: true)
+    }
+    func loadCheckLists() {
+        let path = dataFilePath()
+        if let data = try? Data(contentsOf: path) {
+            let  unarchiver = NSKeyedUnarchiver(forReadingWith: data)
+            lists = unarchiver.decodeObject(forKey: ChecklistsKey) as! [Checklist]
+            unarchiver.finishDecoding()
+        }
+    }
+    
+    let ChecklistsKey = "Checklists"
     
 }
