@@ -13,6 +13,7 @@
 		9131D9801EA22239008AEFD6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9131D97F1EA22239008AEFD6 /* Assets.xcassets */; };
 		9131D9831EA22239008AEFD6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9131D9811EA22239008AEFD6 /* LaunchScreen.storyboard */; };
 		9194FA151EAE1CC90044D227 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9194FA141EAE1CC90044D227 /* DataModel.swift */; };
+		9194FA171EAE85670044D227 /* IconPickerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9194FA161EAE85670044D227 /* IconPickerVC.swift */; };
 		91E26A2D1EA7883B00E500AE /* AllListsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91E26A2C1EA7883B00E500AE /* AllListsVC.swift */; };
 		91E26A2F1EA78D5000E500AE /* Checklist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91E26A2E1EA78D5000E500AE /* Checklist.swift */; };
 		91E26A311EA7B80400E500AE /* ListDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91E26A301EA7B80400E500AE /* ListDetailVC.swift */; };
@@ -30,6 +31,7 @@
 		9131D9821EA22239008AEFD6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9131D9841EA22239008AEFD6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9194FA141EAE1CC90044D227 /* DataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
+		9194FA161EAE85670044D227 /* IconPickerVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IconPickerVC.swift; sourceTree = "<group>"; };
 		91E26A2C1EA7883B00E500AE /* AllListsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllListsVC.swift; sourceTree = "<group>"; };
 		91E26A2E1EA78D5000E500AE /* Checklist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Checklist.swift; sourceTree = "<group>"; };
 		91E26A301EA7B80400E500AE /* ListDetailVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListDetailVC.swift; sourceTree = "<group>"; };
@@ -71,10 +73,11 @@
 				91E26A301EA7B80400E500AE /* ListDetailVC.swift */,
 				91FC9D861EA3880B00A4CFEA /* ItemDetailVC.swift */,
 				91E26A2E1EA78D5000E500AE /* Checklist.swift */,
+				9194FA161EAE85670044D227 /* IconPickerVC.swift */,
 				91FC9D841EA373C600A4CFEA /* ChecklistItem.swift */,
 				91E26A2C1EA7883B00E500AE /* AllListsVC.swift */,
-				9194FA141EAE1CC90044D227 /* DataModel.swift */,
 				9131D97A1EA22239008AEFD6 /* ChecklistVC.swift */,
+				9194FA141EAE1CC90044D227 /* DataModel.swift */,
 				9131D9781EA22239008AEFD6 /* AppDelegate.swift */,
 				9131D97C1EA22239008AEFD6 /* Main.storyboard */,
 				9131D97F1EA22239008AEFD6 /* Assets.xcassets */,
@@ -166,6 +169,7 @@
 				91FC9D851EA373C600A4CFEA /* ChecklistItem.swift in Sources */,
 				9194FA151EAE1CC90044D227 /* DataModel.swift in Sources */,
 				9131D9791EA22239008AEFD6 /* AppDelegate.swift in Sources */,
+				9194FA171EAE85670044D227 /* IconPickerVC.swift in Sources */,
 				91FC9D871EA3880B00A4CFEA /* ItemDetailVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

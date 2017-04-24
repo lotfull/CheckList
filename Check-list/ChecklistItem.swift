@@ -23,6 +23,11 @@ class ChecklistItem: NSObject, NSCoding {
         super.init()
     }
     
+    init(text: String) {
+        self.text = text
+        super.init()
+    }
+    
     override init() {
         super.init()
     }

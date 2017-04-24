@@ -15,7 +15,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        if let navigationVC = window!.rootViewController as? UINavigationController,
+        let allListsVC = navigationVC.viewControllers[0] as? AllListsVC {
+            allListsVC.dataModel = dataModel
+        } else {
+            print("application(didFinishLaunchingWithOptions) unwrap error")
+        }
         return true
     }
 
@@ -41,14 +46,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func saveData() {
-        if let navigationVC = window!.rootViewController as? UINavigationController,
-        let allListsVC = navigationVC.viewControllers[0] as? AllListsVC {
-            allListsVC.saveChecklists()
-        } else {
-            print("saveData nil error")
-        }
+        dataModel.saveChecklists()
     }
 
+    let dataModel = DataModel()
+    
 
 }
 

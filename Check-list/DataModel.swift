@@ -13,6 +13,8 @@ class DataModel {
     
     init() {
         loadCheckLists()
+        registerDefaults() // HERE P. 197
+        handleFirstTIme()
     }
     
     // MARK: - Saving Data
@@ -37,8 +39,48 @@ class DataModel {
             let  unarchiver = NSKeyedUnarchiver(forReadingWith: data)
             lists = unarchiver.decodeObject(forKey: ChecklistsKey) as! [Checklist]
             unarchiver.finishDecoding()
+            sortChecklists()
         }
     }
     
+    func registerDefaults() {
+        let dictionary: [String: Any] = [ChecklistsIndexKey: -1,
+                                         isFirstTimeKey: true]
+        UserDefaults.standard.register(defaults: dictionary)
+        
+    }
+    var indexOfSelectedChecklist: Int {
+        get {
+            return UserDefaults.standard.integer(forKey: ChecklistsIndexKey)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: ChecklistsIndexKey)
+            UserDefaults.standard.synchronize()
+        }
+    }
+    
+    func handleFirstTIme() {
+        let userDefaults = UserDefaults.standard
+        let isFirstTime = userDefaults.bool(forKey: isFirstTimeKey)
+        if isFirstTime {
+            let checklist = Checklist(name: "First list")
+            let item = ChecklistItem(text: "Write some To Do task")
+            checklist.items.append(item)
+            lists.append(checklist)
+            indexOfSelectedChecklist = 0
+            userDefaults.set(false, forKey: isFirstTimeKey)
+            userDefaults.synchronize()
+        }
+    }
+    
+    func sortChecklists() {
+        lists.sort(by: { list1, list2 in
+        return list1.name.localizedStandardCompare(list2.name) == .orderedAscending })
+    }
+    
+    
     let ChecklistsKey = "Checklists"
+    let ChecklistsIndexKey = "ChecklistsIndex"
+    let isFirstTimeKey = "FirstTime"
+    
 }
