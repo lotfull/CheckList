@@ -7,9 +7,10 @@
 //
 
 import UIKit
+import UserNotifications
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
     var window: UIWindow?
 
@@ -21,7 +22,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else {
             print("application(didFinishLaunchingWithOptions) unwrap error")
         }
+        
+        let center = UNUserNotificationCenter.current()
+        center.requestAuthorization(options: [.alert, UNAuthorizationOptions.sound]) {
+            granted, error in
+            if granted {
+                print("We have permission")
+            } else {
+                print("Permission denied")
+            }
+        }
+        
+        center.delegate = self
+        
+        let content = UNMutableNotificationContent()
+        content.title = "Hello!"
+        content.body = "I am a local notification"
+        content.sound = UNNotificationSound.default()
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 2, repeats: false)
+        let request = UNNotificationRequest(identifier: "MyNotification", content: content, trigger: trigger)
+        center.add(request)
+        
         return true
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        print("Received local notification \(notification)")
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -50,6 +76,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     let dataModel = DataModel()
+    
     
 
 }

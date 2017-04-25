@@ -23,8 +23,13 @@ class ChecklistItem: NSObject, NSCoding {
         super.init()
     }
     
-    init(text: String) {
+    convenience init(text: String) {
+        self.init(text: text, checked: false)
+    }
+    
+    init(text: String, checked: Bool) {
         self.text = text
+        self.checked = checked
         super.init()
     }
     

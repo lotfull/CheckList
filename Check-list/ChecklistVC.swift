@@ -88,8 +88,6 @@ class ChecklistVC: UITableViewController, /* step 4 */ ItemDetailVCDelegate {
             if segue.identifier == "EditItem",
             let indexPath = tableView.indexPath(for: sender as! UITableViewCell) {
                 controller.itemToEdit = checklist.items[indexPath.row]
-            } else {
-                print("Error while segue.identifier == EditItem and unwraping indexPath?")
             }
         } else {
             print("Error while segue.identifier == AddIten || EditItem and typecasting seque.identifier through navCon and ItemDetailVC")
@@ -99,7 +97,8 @@ class ChecklistVC: UITableViewController, /* step 4 */ ItemDetailVCDelegate {
     // MARK: - Configure
     func configureCheckmarks(for cell: UITableViewCell, with item: ChecklistItem) {
         let checkLabel = cell.viewWithTag(1001) as! UILabel
-        checkLabel.text =  item.checked ? "✅" : "☑️"
+        checkLabel.text =  item.checked ? "🔵" : "⚪️"  //"✅" : "⭕️"
+        checkLabel.textColor = view.tintColor
     }
     func configureText(for cell: UITableViewCell, with item: ChecklistItem) {
         let label = cell.viewWithTag(1000) as! UILabel
