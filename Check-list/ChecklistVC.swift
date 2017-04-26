@@ -15,7 +15,6 @@ class ChecklistVC: UITableViewController, /* step 4 */ ItemDetailVCDelegate {
         title = checklist.name
     }
     
-    
     required init?(coder aDecoder: NSCoder) {
         /*itemsNumber = texts.count
         rowIsChecked = [Bool](repeating: false, count: itemsNumber)
@@ -68,9 +67,11 @@ class ChecklistVC: UITableViewController, /* step 4 */ ItemDetailVCDelegate {
     }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ChecklistCell", for: indexPath)
-        let label = cell.viewWithTag(1000) as! UILabel
+        let textLabel = cell.viewWithTag(1000) as! UILabel
+        let dateLabel = cell.viewWithTag(1002) as! UILabel
         let item = checklist.items[indexPath.row]
-        label.text = item.text
+        textLabel.text = item.text
+        dateLabel.text = item.dueDate
         configureCheckmarks(for: cell, with: item)
         return cell
     }
@@ -104,36 +105,6 @@ class ChecklistVC: UITableViewController, /* step 4 */ ItemDetailVCDelegate {
         let label = cell.viewWithTag(1000) as! UILabel
         label.text = item.text
     }
-    
-    // MARK: - Saving Data
-    /*
-    func documentsDirectory() -> URL {
-        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        return paths[0]
-    }
-    func dataFilePath() -> URL {
-        return documentsDirectory().appendingPathComponent("Checklists.plist")
-    }
-    
-    func saveChecklistItems() {
-        let data = NSMutableData()
-        let archiver = NSKeyedArchiver(forWritingWith: data)
-        archiver.encode(checklist.items, forKey: ItemsKeyName)
-        archiver.finishEncoding()
-        data.write(to: dataFilePath(), atomically: true)
-    }
-    
-    func loadChecklistItems() {
-        let path = dataFilePath()
-        
-        if let data = try? Data(contentsOf: path) {
-            let unarchiver = NSKeyedUnarchiver(forReadingWith: data)
-            checklist.items = unarchiver.decodeObject(forKey: ItemsKeyName) as! [ChecklistItem]
-            unarchiver.finishDecoding()
-        } else {
-            print("Data inconcistance!")
-        }
-    }*/
     
     // MARK: - Variables
     var rowIsChecked = [Bool]()
