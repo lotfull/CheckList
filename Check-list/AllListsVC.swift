@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AllListsVC: UITableViewController, ListDetailVCDelegate, UINavigationControllerDelegate {
+class AllListsVC: UITableViewController, AddChecklistVCDelegate, UINavigationControllerDelegate {
     
     
     override func viewDidLoad() {
@@ -66,7 +66,7 @@ class AllListsVC: UITableViewController, ListDetailVCDelegate, UINavigationContr
             controller.checklist = sender as! Checklist
         } else if segue.identifier == AddChecklistSequeID,
         let navigationController = segue.destination as? UINavigationController,
-        let controller = navigationController.topViewController as? ListDetailVC {
+        let controller = navigationController.topViewController as? AddChecklistVC {
             controller.delegate = self
             controller.checklistToEdit = nil
         } else { print("prepare for show checklist seque error") }
@@ -77,29 +77,29 @@ class AllListsVC: UITableViewController, ListDetailVCDelegate, UINavigationContr
         tableView.deleteRows(at: [indexPath], with: .automatic)
     }
     
-    func listDetailVCDidCancel(_ controller: ListDetailVC) {
+    func addChecklistVCDidCancel(_ controller: AddChecklistVC) {
         dismiss(animated: true, completion: nil)
     }
     
-    func listDetailVCDone(_ controller: ListDetailVC, didFinishAdding list: Checklist) {
+    func addChecklistVCDone(_ controller: AddChecklistVC, didFinishAdding list: Checklist) {
         dataModel.lists.append(list)
         dataModel.sortChecklists()
         tableView.reloadData()
         dismiss(animated: true, completion: nil)
     }
     
-    func listDetailVCDone(_ controller: ListDetailVC, didFinishEditing list: Checklist) {
+    func addChecklistVCDone(_ controller: AddChecklistVC, didFinishEditing list: Checklist) {
         dataModel.sortChecklists()
         tableView.reloadData()
         dismiss(animated: true, completion: nil)
     }
     
     override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
-        if let navigationController = storyboard!.instantiateViewController(withIdentifier: "ListDetailNavigationC") as? UINavigationController,
-        let listDetailController = navigationController.topViewController as? ListDetailVC {
-            listDetailController.delegate = self
+        if let navigationController = storyboard!.instantiateViewController(withIdentifier: "AddChecklistNavigationC") as? UINavigationController,
+        let addChecklistController = navigationController.topViewController as? AddChecklistVC {
+            addChecklistController.delegate = self
             let checklist = dataModel.lists[indexPath.row]
-            listDetailController.checklistToEdit = checklist
+            addChecklistController.checklistToEdit = checklist
             present(navigationController, animated: true, completion: nil)
         } else { print("Some error with tableView(accessoryButtonTappedForRowWith)") }
     }

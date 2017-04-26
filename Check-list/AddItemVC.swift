@@ -1,5 +1,5 @@
 //
-//  ItemDetailVC.swift
+//  AddItemVC.swift
 //  Check-list
 //
 //  Created by Kam Lotfull on 16.04.17.
@@ -9,13 +9,13 @@
 import UIKit
 import UserNotifications
 // step 1
-protocol ItemDetailVCDelegate: class {
-    func itemDetailVCDidCancel(_ controller: ItemDetailVC)
-    func itemDetailVCDone(_ controller: ItemDetailVC, didFinishAdding item: ChecklistItem)
-    func itemDetailVCDone(_ controller: ItemDetailVC, didFinishEditing item: ChecklistItem)
+protocol AddItemVCDelegate: class {
+    func addItemVCDidCancel(_ controller: AddItemVC)
+    func addItemVCDone(_ controller: AddItemVC, didFinishAdding item: ChecklistItem)
+    func addItemVCDone(_ controller: AddItemVC, didFinishEditing item: ChecklistItem)
 }
 
-class ItemDetailVC: UITableViewController, UITextViewDelegate {
+class AddItemVC: UITableViewController, UITextViewDelegate {
     
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var doneButton: UIBarButtonItem!
@@ -24,7 +24,7 @@ class ItemDetailVC: UITableViewController, UITextViewDelegate {
     @IBOutlet var datePickerCell: UITableViewCell!
     @IBOutlet weak var datePicker: UIDatePicker!
 
-    weak var delegate: ItemDetailVCDelegate?
+    weak var delegate: AddItemVCDelegate?
 
     var itemToEdit: ChecklistItem?
     var visible = false
@@ -43,7 +43,7 @@ class ItemDetailVC: UITableViewController, UITextViewDelegate {
     }
     
     @IBAction func cancel(_ sender: Any) {
-        delegate?.itemDetailVCDidCancel(self)
+        delegate?.addItemVCDidCancel(self)
     }
 
     @IBAction func done(_ sender: Any) {
@@ -52,7 +52,7 @@ class ItemDetailVC: UITableViewController, UITextViewDelegate {
             item.shouldRemind = shouldRemindSwitch.isOn
             item.dueDate = dueDate
             item.scheduleNotification()
-            delegate?.itemDetailVCDone(self, didFinishEditing: item)
+            delegate?.addItemVCDone(self, didFinishEditing: item)
         } else {
             let item = ChecklistItem()
             item.text = textField.text!
@@ -60,7 +60,7 @@ class ItemDetailVC: UITableViewController, UITextViewDelegate {
             item.shouldRemind = shouldRemindSwitch.isOn
             item.dueDate = dueDate
             item.scheduleNotification()
-            delegate?.itemDetailVCDone(self, didFinishAdding: item)
+            delegate?.addItemVCDone(self, didFinishAdding: item)
         }
     }
     

@@ -1,5 +1,5 @@
 //
-//  ListDetailVC.swift
+//  AddChecklistVC.swift
 //  Check-list
 //
 //  Created by Kam Lotfull on 19.04.17.
@@ -8,19 +8,19 @@
 
 import UIKit
 
-protocol ListDetailVCDelegate: class {
-    func listDetailVCDidCancel(_ controller: ListDetailVC)
-    func listDetailVCDone(_ controller: ListDetailVC, didFinishAdding list: Checklist)
-    func listDetailVCDone(_ controller: ListDetailVC, didFinishEditing list: Checklist)
+protocol AddChecklistVCDelegate: class {
+    func addChecklistVCDidCancel(_ controller: AddChecklistVC)
+    func addChecklistVCDone(_ controller: AddChecklistVC, didFinishAdding list: Checklist)
+    func addChecklistVCDone(_ controller: AddChecklistVC, didFinishEditing list: Checklist)
 }
 
-class ListDetailVC: UITableViewController, UITextFieldDelegate, IconPickerVCDelegate {
+class AddChecklistVC: UITableViewController, UITextFieldDelegate, IconPickerVCDelegate {
     
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var doneBarButton: UIBarButtonItem!
     @IBOutlet weak var iconImageView: UIImageView!
 
-    weak var delegate: ListDetailVCDelegate?
+    weak var delegate: AddChecklistVCDelegate?
     
     var checklistToEdit: Checklist?
     
@@ -43,16 +43,16 @@ class ListDetailVC: UITableViewController, UITextFieldDelegate, IconPickerVCDele
     }
     
     @IBAction func cancel() {
-        delegate?.listDetailVCDidCancel(self)
+        delegate?.addChecklistVCDidCancel(self)
     }
     @IBAction func done() {
         if let checklist = checklistToEdit {
             checklist.name = textField.text!
             checklist.iconName = iconName
-            delegate?.listDetailVCDone(self, didFinishEditing: checklist)
+            delegate?.addChecklistVCDone(self, didFinishEditing: checklist)
         } else {
             let checklist = Checklist(name: textField.text!, iconName: iconName)
-            delegate?.listDetailVCDone(self, didFinishAdding: checklist)
+            delegate?.addChecklistVCDone(self, didFinishAdding: checklist)
         }
     }
     

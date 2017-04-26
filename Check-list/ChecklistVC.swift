@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ChecklistVC: UITableViewController, /* step 4 */ ItemDetailVCDelegate {
+class ChecklistVC: UITableViewController, AddItemVCDelegate {
    
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -16,40 +16,46 @@ class ChecklistVC: UITableViewController, /* step 4 */ ItemDetailVCDelegate {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        /*itemsNumber = texts.count
-        rowIsChecked = [Bool](repeating: false, count: itemsNumber)
-        for i in 0..<itemsNumber {
-            let tempItem = ChecklistItem()
-            tempItem.text = texts[i]
-            tempItem.checked = rowIsChecked[i]
-            items.append(tempItem)
-        }*/
-        //checklist.items = [ChecklistItem]()
         super.init(coder: aDecoder)
-        //loadChecklistItems()
-        //print("DocumentsDirectory/DataFilePath: \(dataFilePath())")
     }
     
-    // MARK: - ItemDetail
-    func itemDetailVCDidCancel(_ controller: ItemDetailVC) {
+    // MARK: - AddItem
+    func addItemVCDidCancel(_ controller: AddItemVC) {
         dismiss(animated: true, completion: nil)
     }
-    func itemDetailVCDone(_ controller: ItemDetailVC, didFinishAdding item: ChecklistItem) {
+    func addItemVCDone(_ controller: AddItemVC, didFinishAdding item: ChecklistItem) {
         let indexPath = IndexPath(row: checklist.items.count, section: 0)
         checklist.items.append(item)
         tableView.insertRows(at: [indexPath], with: .automatic)
+        configureDateLabel(for: tableView.cellForRow(at: indexPath)!, with: item)
+        changeSortType()
+        tableView.reloadData()
         dismiss(animated: true, completion: nil)
-        //saveChecklistItems()
     }
-    func itemDetailVCDone(_ controller: ItemDetailVC, didFinishEditing item: ChecklistItem) {
+    func sortItems(by sortType: String) {
+        if sortType == ByDate {
+            checklist.items.sort(by: {
+                item1, item2 in
+                return item1.dueDate.compare(item2.dueDate) == .orderedAscending
+            })
+        } else {
+            checklist.items.sort(by: {
+                item1, item2 in
+                return item1.text.localizedStandardCompare(item2.text) == .orderedAscending
+            })
+        }
+    }
+    func addItemVCDone(_ controller: AddItemVC, didFinishEditing item: ChecklistItem) {
         if let index = checklist.items.index(of: item) {
             let indexPath = IndexPath(row: index, section: 0)
             if let cell = tableView.cellForRow(at: indexPath) {
                 configureText(for: cell, with: item)
+                configureDateLabel(for: cell, with: item)
+                changeSortType()
+                tableView.reloadData()
             }
         }
         dismiss(animated: true, completion: nil)
-        //saveChecklistItems()
     }
     
     // MARK: - TableView
@@ -63,27 +69,23 @@ class ChecklistVC: UITableViewController, /* step 4 */ ItemDetailVCDelegate {
             configureCheckmarks(for: cell, with: item)
         }
         tableView.deselectRow(at: indexPath, animated: true)
-        //saveChecklistItems()
     }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ChecklistCell", for: indexPath)
-        let textLabel = cell.viewWithTag(1000) as! UILabel
-        let dateLabel = cell.viewWithTag(1002) as! UILabel
         let item = checklist.items[indexPath.row]
-        textLabel.text = item.text
-        dateLabel.text = item.dueDate
+        configureText(for: cell, with: item)
         configureCheckmarks(for: cell, with: item)
+        configureDateLabel(for: cell, with: item)
         return cell
     }
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         checklist.items.remove(at: indexPath.row)
         tableView.deleteRows(at: [indexPath], with: .automatic)
-        //saveChecklistItems()
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "AddItem" || segue.identifier == "EditItem"),
         let navigationController = segue.destination as? UINavigationController,
-        let controller = navigationController.topViewController as? ItemDetailVC {
+        let controller = navigationController.topViewController as? AddItemVC {
             controller.delegate = self
             
             if segue.identifier == "EditItem",
@@ -91,21 +93,37 @@ class ChecklistVC: UITableViewController, /* step 4 */ ItemDetailVCDelegate {
                 controller.itemToEdit = checklist.items[indexPath.row]
             }
         } else {
-            print("Error while segue.identifier == AddIten || EditItem and typecasting seque.identifier through navCon and ItemDetailVC")
+            print("Error while segue.identifier == AddIten || EditItem and typecasting seque.identifier through navCon and AddItemVC")
         }
     }
     
     // MARK: - Configure
+    func configureDateLabel(for cell: UITableViewCell, with item: ChecklistItem) {
+        let dateLabel = cell.viewWithTag(1002) as! UILabel
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
+        dateLabel.text = formatter.string(from: item.dueDate)
+        dateLabel.isHidden = !item.shouldRemind
+    }
     func configureCheckmarks(for cell: UITableViewCell, with item: ChecklistItem) {
         let checkLabel = cell.viewWithTag(1001) as! UILabel
-        checkLabel.text =  item.checked ? "🔵" : "⚪️"  //"✅" : "⭕️"
+        checkLabel.text =  item.checked ? "◉" : "◎"  //"✅" : "⭕️"
         checkLabel.textColor = view.tintColor
     }
     func configureText(for cell: UITableViewCell, with item: ChecklistItem) {
-        let label = cell.viewWithTag(1000) as! UILabel
-        label.text = item.text
+        let textlabel = cell.viewWithTag(1000) as! UILabel
+        textlabel.text = item.text
     }
     
+    @IBAction func sortButtonPressed(_ sender: UIBarButtonItem) {
+        changeSortType()
+        tableView.reloadData()
+    }
+    func changeSortType() {
+        checklist.sortType = (checklist.sortType == ByDate) ? ByText : ByDate
+        sortItems(by: checklist.sortType)
+    }
     // MARK: - Variables
     var rowIsChecked = [Bool]()
     var itemsNumber = 0
@@ -119,5 +137,7 @@ class ChecklistVC: UITableViewController, /* step 4 */ ItemDetailVCDelegate {
     ]
     let ItemsKeyName = "ChecklistItems"
     var checklist: Checklist!
+    let ByDate = "byDate"
+    let ByText = "byText"
 }
 

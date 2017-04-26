@@ -79,6 +79,10 @@ class DataModel {
         return list1.name.localizedStandardCompare(list2.name) == .orderedAscending })
     }
     
+    func sortItems(in checklist: Checklist) {
+        
+    }
+    
     class func nextChecklistItemID() -> Int {
         let userDefaults = UserDefaults.standard
         let itemID = userDefaults.integer(forKey: "ChecklistItemID")
